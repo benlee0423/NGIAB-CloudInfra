@@ -31,6 +31,9 @@ RUN if [ "x$COMMIT" != "x" ]; then \
     && git submodule update --init --depth 1 test/googletest \
     && git submodule update --init --recursive --depth 1
 
+# Make an alias for t-route with tag name
+FROM awiciroh/t-route:${TAG_NAME} as troute
+
 ################################################################################################################
 ################################################################################################################
 ##### Create intermediate Docker build stage for building framework in Rocky Linux environment
@@ -58,8 +61,8 @@ ARG REPO_URL \
     BUILD_SLOTH="true"
 
 COPY --chown=${USER} --from=rocky_init_repo /ngen/ngen /ngen/ngen
-COPY --chown=${USER} --from=awiciroh/t-route /ngen/t-route/wheels /tmp/t-route-wheels
-COPY --chown=${USER} --from=awiciroh/t-route /ngen/t-route/requirements.txt /tmp/t-route-requirements.txt
+COPY --chown=${USER} --from=troute /ngen/t-route/wheels /tmp/t-route-wheels
+COPY --chown=${USER} --from=troute /ngen/t-route/requirements.txt /tmp/t-route-requirements.txt
 ENV BOOST_ROOT=/ngen/boost
 
 USER root
