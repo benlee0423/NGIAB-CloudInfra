@@ -2,8 +2,6 @@ name: Build and push final image
 on:
   push:
     branches: [ main ]
-    paths:
-      - docker/**
   pull_request:
     branches: [ main ]
   workflow_dispatch:
@@ -26,14 +24,20 @@ jobs:
   deps:
     needs: start-runner
     uses: ./.github/workflows/docker_deps_image.yml
+    with:
+      runner_label: ARM64
     secrets: inherit
   troute:
     needs: deps
     uses: ./.github/workflows/docker_troute_image.yml
+    with:
+      runner_label: ARM64
     secrets: inherit
   ngen:
     needs: troute
     uses: ./.github/workflows/docker_ngen_image.yml
+    with:
+      runner_label: ARM64
     secrets: inherit
   final:
     needs: ngen
@@ -41,15 +45,24 @@ jobs:
     steps:
       - name: deploy
         uses: actions/checkout@v2
+      - name: Build and test Docker image
+        uses: ./.github/action_templates/build-and-test
+        with:
+          docker-auth-token: ${{ secrets.DOCKER_AUTH_TOKEN }}
+          image-name: "ciroh-ngen-image"
+          dockerfile-name: "Dockerfile"
+        if: ${{ !startsWith(github.ref, 'refs/heads/main') }}
       - name: Build and push Docker image
         uses: ./.github/action_templates/build-and-push
         with:
           docker-auth-token: ${{ secrets.DOCKER_AUTH_TOKEN }}
           image-name: "ciroh-ngen-image"
           dockerfile-name: "Dockerfile"
+          platform: ARM64
+        if: startsWith(github.ref, 'refs/heads/main')
   check_result:
     needs: final
-    runs-on: self-hosted
+    runs-on: ARM74
     outputs:
       output1: ${{ steps.step1.outputs.result }}
     steps:
@@ -57,7 +70,7 @@ jobs:
         run: echo "result=success" >> "$GITHUB_OUTPUT"
 
   slack:
-    runs-on: self-hosted
+    runs-on: ARM64
     if: ${{ always() }}
     needs: [deps, troute, ngen, final, check_result]
     env:
