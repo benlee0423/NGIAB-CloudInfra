@@ -18,7 +18,7 @@ jobs:
           docker-auth-token: ${{ secrets.DOCKER_AUTH_TOKEN }}
           image-name: "t-route"
           dockerfile-name: "Dockerfile.t-route"
-        if: github.event_name == 'pull_request' && !startsWith(github.ref, 'refs/heads/main')
+        if: ${{ !startsWith(github.ref, 'refs/heads/main') }}
       - name: Build and push Docker image
         uses: ./.github/action_templates/build-and-push
         with:
@@ -26,4 +26,4 @@ jobs:
           image-name: "t-route"
           dockerfile-name: "Dockerfile.t-route"
           platform: ${{inputs.runner_label}}
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/main')
+        if: startsWith(github.ref, 'refs/heads/main')
