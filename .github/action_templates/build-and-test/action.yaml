@@ -48,7 +48,7 @@ runs:
         file: ./docker/${{ inputs.dockerfile-name}}
         build-args: |
           TAG_NAME=${{ env.TAG_NAME}}
-        load: true
+        push: false
         platforms: linux/arm64
         tags: |
           awiciroh/${{ inputs.image-name}}:${{ env.TAG_NAME}}
