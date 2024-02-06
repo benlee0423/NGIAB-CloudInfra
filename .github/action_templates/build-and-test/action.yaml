@@ -51,7 +51,7 @@ runs:
         push: true
         platforms: linux/arm64
         tags: |
-          localhost:5000/awiciroh/${{ inputs.image-name}}:${{ env.TAG_NAME}}
+          awiciroh/${{ inputs.image-name}}:${{ env.TAG_NAME}}
         builder: mybuilder
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
