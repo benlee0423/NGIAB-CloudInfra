@@ -7,22 +7,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  start-runner:
-    runs-on: ubuntu-latest
-    steps:
-      - name: start runner
-        uses: gagoar/invoke-aws-lambda@master
-        with:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          FunctionName: StartCirohRunner
+  #start-runner:
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - name: start runner
+  #      uses: gagoar/invoke-aws-lambda@master
+  #      with:
+  #        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #        FunctionName: StartCirohRunner
 
-      - name: wait runner up
-        shell: bash
-        run: |
-            sleep 300
+  #    - name: wait runner up
+  #      shell: bash
+  #      run: |
+  #          sleep 300
   deps:
-    needs: start-runner
+    #needs: start-runner
     uses: ./.github/workflows/docker_deps_image.yml
     with:
       runner_label: ARM64
@@ -96,13 +96,13 @@ jobs:
           job-status: ${{ env.JOBSTATUS }}
           pull_request_url: ${{ github.event.pull_request.html_url }}
           head_commit_url: ${{ github.event.head_commit.url }}
-  stop-runner:
-    needs: slack
-    runs-on: ubuntu-latest
-    steps:
-      - name: stop runner
-        uses: gagoar/invoke-aws-lambda@master
-        with:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          FunctionName: StopCirohRunner
+  #stop-runner:
+  #  needs: slack
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - name: stop runner
+        # uses: gagoar/invoke-aws-lambda@master
+        # with:
+        #   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        #   FunctionName: StopCirohRunner
