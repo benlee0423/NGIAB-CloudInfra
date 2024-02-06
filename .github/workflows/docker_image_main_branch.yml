@@ -51,6 +51,7 @@ jobs:
           docker-auth-token: ${{ secrets.DOCKER_AUTH_TOKEN }}
           image-name: "ciroh-ngen-image"
           dockerfile-name: "Dockerfile"
+          platform: ARM64
         if: ${{ !startsWith(github.ref, 'refs/heads/main') }}
       - name: Build and push Docker image
         uses: ./.github/action_templates/build-and-push

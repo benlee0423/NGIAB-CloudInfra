@@ -18,6 +18,7 @@ jobs:
           docker-auth-token: ${{ secrets.DOCKER_AUTH_TOKEN }}
           image-name: "ngen-deps"
           dockerfile-name: "Dockerfile.ngen-deps"
+          platform: ${{inputs.runner_label}}
         if: ${{ !startsWith(github.ref, 'refs/heads/main') }}
       - name: Build and push Docker image
         uses: ./.github/action_templates/build-and-push
