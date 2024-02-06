@@ -49,6 +49,7 @@ runs:
         build-args: |
           TAG_NAME=${{ env.TAG_NAME}}
         load: true
+        platforms: linux/arm64
         tags: |
           awiciroh/${{ inputs.image-name}}:${{ env.TAG_NAME}}
         builder: mybuilder
