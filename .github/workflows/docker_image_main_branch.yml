@@ -41,7 +41,7 @@ jobs:
     secrets: inherit
   final:
     needs: ngen
-    runs-on: self-hosted
+    runs-on: ARM64
     steps:
       - name: deploy
         uses: actions/checkout@v2
@@ -62,7 +62,7 @@ jobs:
         if: startsWith(github.ref, 'refs/heads/main')
   check_result:
     needs: final
-    runs-on: ARM74
+    runs-on: ARM64
     outputs:
       output1: ${{ steps.step1.outputs.result }}
     steps:
