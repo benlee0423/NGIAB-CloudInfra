@@ -42,7 +42,7 @@ runs:
           docker buildx create --use --name mybuilder --node mybuilder
 
     - name: Build and Cache Docker Image
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v5
       with:
         context: ./docker
         file: ./docker/${{ inputs.dockerfile-name}}
@@ -58,3 +58,7 @@ runs:
       env:
         DOCKER_BUILDKIT: 1
         DOCKER_CLI_EXPERIMENTAL: enabled
+    - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache 
